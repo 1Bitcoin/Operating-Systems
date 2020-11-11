@@ -15,9 +15,9 @@ int main()
 	if (first_child == 0)
 	{
 		//потомственный код1
-		printf("first_child: pid=%d; group=%d; parent=%d\n", getpid(), getpgrp(), getppid());
+		printf("\nfirst_child: pid=%d; group=%d; parent=%d\n", getpid(), getpgrp(), getppid());
 		sleep(2);
-		printf( "first_child: pid=%d; group=%d;	parent=%d\n", getpid(), getpgrp(), getppid() );
+		printf("\nfirst_child: pid=%d; group=%d; parent=%d\n", getpid(), getpgrp(), getppid());
 
 		return 0;
 	}
@@ -33,9 +33,9 @@ int main()
 	if (second_child == 0)
 	{
 		//потомственный код2
-		printf("second_child: pid=%d; group=%d; parent=%d\n", getpid(), getpgrp(), getppid());
+		printf("\nsecond_child: pid=%d; group=%d; parent=%d\n", getpid(), getpgrp(), getppid());
 		sleep(2);
-		printf( "second_child: pid=%d;	group=%d; parent=%d\n", getpid(), getpgrp(), getppid() );
+		printf("\nsecond_child: pid=%d; group=%d; parent=%d\n", getpid(), getpgrp(), getppid());
 
 		return 0;
 	}
@@ -43,7 +43,7 @@ int main()
 	if (first_child != 0 && second_child != 0) // можно опустить?
 	{
 		//родительский код
-        printf("Parent: pid=%d;	group=%d; first_child=%d; second_child=%d\n", getpid(), getpgrp(), first_child, second_child);
+        printf("\nParent: pid=%d;	group=%d; first_child=%d; second_child=%d\n", getpid(), getpgrp(), first_child, second_child);
 		return 0;
 	}
 }
