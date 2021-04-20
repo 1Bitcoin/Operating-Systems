@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 {
     if (argc != 2)
     {
-        printf("Use ./a.out <pid>\n");
+        printf("Use ./main.out <pid>\n");
         return -1;
     }
     
@@ -46,7 +46,7 @@ int fread_file(FILE* fresult, const char* filename, void (*print_func)(FILE*, co
 
 void fread_link(FILE* fresult, const char* filename, const char* showname)
 {
-	char str[BUF_SIZE];
+    char str[BUF_SIZE];
     readlink(filename, str, BUF_SIZE); // Считывает значение символьной ссылки
     fprintf(fresult, "%s -> %s\n", showname, str);
 }
@@ -56,35 +56,35 @@ void fread_fd(FILE* fresult, const char* fd_name)
 {
     fprintf(fresult, "File: %s\n", fd_name);
 
-	DIR *dp;
-	if ((dp = opendir(fd_name)) == NULL)
-	{
-		printf("%s\n", strerror(errno));
-		exit(errno);
-	}
+    DIR *dp;
+    if ((dp = opendir(fd_name)) == NULL)
+    {
+        printf("%s\n", strerror(errno));
+        exit(errno);
+    }
 
-	struct dirent *dirp;
-	char path[BUF_SIZE];
-	while ((dirp = readdir(dp)) != NULL)
-	{
-		// Пропуск каталогов . и ..
-		if ((strcmp(dirp->d_name, ".") != 0) && (strcmp(dirp->d_name, "..") != 0))
-		{
-			sprintf(path, "%s/%s", fd_name, dirp->d_name);
+    struct dirent *dirp;
+    char path[BUF_SIZE];
+    while ((dirp = readdir(dp)) != NULL)
+    {
+        // Пропуск каталогов . и ..
+        if ((strcmp(dirp->d_name, ".") != 0) && (strcmp(dirp->d_name, "..") != 0))
+        {
+            sprintf(path, "%s/%s", fd_name, dirp->d_name);
             fread_link(fresult, path, dirp->d_name);
-		}
-	}
+        }
+    }
 
-	if (closedir(dp) < 0)
-	{
-		printf("%s", strerror(errno));
-		exit(errno);
-	}
+    if (closedir(dp) < 0)
+    {
+        printf("%s", strerror(errno));
+        exit(errno);
+    }
 }
 
 void simple_output(FILE* file, const char *buf)
 {
-	fprintf(file, "%s\n", buf);
+    fprintf(file, "%s\n", buf);
 }
 
 void associative_output(FILE* file, const char *buf, const char *outputNames[], int len)
@@ -92,11 +92,6 @@ void associative_output(FILE* file, const char *buf, const char *outputNames[], 
     const char* format = "%20s:\t %s\n";
     char *cur = strtok(buf, " ");   // поиск разделителей в файле
     for (int i = 0; cur != NULL && i < len; i++)
-    {
-        fprintf(file, format, outputNames[i], cur);
-        cur = strtok(NULL, " ");
-    }
-    while (cur != NULL)
     {
         fprintf(file, format, outputNames[i], cur);
         cur = strtok(NULL, " ");
