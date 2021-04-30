@@ -1,5 +1,5 @@
 #include <linux/module.h>
-#include <init.h>
+#include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/proc_fs.h>
 #include <linux/string.h>
@@ -15,11 +15,14 @@ int fortune_init(void);
 ssize_t fortune_read(struct file *file, char *buf, size_t count, loff_t *f_pos);
 ssize_t fortune_write(struct file *file, const char *buf, size_t count, loff_t *f_pos);
 void fortune_exit(void);
+int my_open(struct inode *inode, struct file *file);
+int my_release(struct inode *inode, struct file *file);
 
-struct file_operations fops = {
-    .owner = THIS_MODULE,
-    .read = fortune_read,
-    .write = fortune_write,
+struct proc_ops fops = {
+    .proc_open = my_open,
+    .proc_release = my_release,
+    .proc_read = fortune_read,
+    .proc_write = fortune_write,
 };
 
 char *cookie_buf;
@@ -27,9 +30,21 @@ struct proc_dir_entry *proc_file;
 unsigned int read_index;
 unsigned int write_index;
 
+int my_open(struct inode *inode, struct file *file)
+{
+    printk(KERN_INFO "call open\n");
+    return 0;
+}
+
+int my_release(struct inode *inode, struct file *file)
+{
+    printk(KERN_INFO "call release\n");
+    return 0;
+}
 
 int fortune_init(void)
 {
+    printk(KERN_INFO "call init\n");
     cookie_buf = vmalloc(COOKIE_BUF_SIZE);
 
     if (!cookie_buf)
@@ -51,16 +66,16 @@ int fortune_init(void)
     read_index = 0;
     write_index = 0;
 
-    proc_mkdir("Dir_fort", NULL);
-    proc_symlink("Symbolic_fort", NULL, "/proc/fortune");
-
     printk(KERN_INFO "Fortune module loaded successfully\n");
     return 0;
 }
 
 
+
+
 ssize_t fortune_read(struct file *file, char *buf, size_t count, loff_t *f_pos)
 {
+    printk(KERN_INFO "call read\n");
     int len;
 
     if (write_index == 0 || *f_pos > 0)
@@ -79,6 +94,7 @@ ssize_t fortune_read(struct file *file, char *buf, size_t count, loff_t *f_pos)
 
 ssize_t fortune_write(struct file *file, const char *buf, size_t count, loff_t *f_pos)
 {
+    printk(KERN_INFO "call write\n");
     int free_space = (COOKIE_BUF_SIZE - write_index) + 1;
 
     if (count > free_space)
@@ -99,6 +115,7 @@ ssize_t fortune_write(struct file *file, const char *buf, size_t count, loff_t *
 
 void fortune_exit(void)
 {
+    printk(KERN_INFO "call exit\n");
     remove_proc_entry("fortune", NULL);
 
     if (cookie_buf)
