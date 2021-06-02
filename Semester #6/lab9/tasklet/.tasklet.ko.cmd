@@ -1,1 +1,0 @@
-cmd_/home/zhigalkin/tasklet/tasklet.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id=sha1  -T ./scripts/module-common.lds -o /home/zhigalkin/tasklet/tasklet.ko /home/zhigalkin/tasklet/tasklet.o /home/zhigalkin/tasklet/tasklet.mod.o;  true
